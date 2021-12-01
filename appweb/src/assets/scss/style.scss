@@ -1,0 +1,327 @@
+@import "./_variables";
+
+// !reset 对全局的所有元素进行重置
+* {
+  //  所有的块级元素从以内容为准变成以边框为准
+  /*
+    这样加上padding的时候，它不会将内容撑大，而是会将内容挤压
+  */
+  box-sizing: border-box;
+  // 元素高亮，是指在通过tab切换元素的时候发生的
+  outline: none;
+}
+// !重置html的元素
+// 因为在web中的单位通常都是使用 rem，其是相对于html中定义的字体的大小来的
+// html的默认字体大小是 16px
+html {
+  font-size: 13px;
+}
+
+// !重置body元素
+// 默认的body都是存在边距的
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  // 定义以下行高
+  line-height: 1.2em;
+  background: #ededed;
+  // 字体平滑
+}
+
+p {
+  line-height: 1.75rem;
+}
+
+// width, height
+.w-100 {
+  width: 100%;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+// !重置a元素
+a {
+  color: #999;
+  text-decoration: none;
+}
+
+// !添加总体的colors变量，以键值对的方式
+// // 定义的key值如果与属性名称一致，那么就可以使用双引号将其括起来
+// $colors: (
+//   "primary": #db9e3f,
+//   "white": #fff,
+//   "black": #333,
+//   "dark": #222,
+//   "grey": #999,
+//   "light": #f9f9f9,
+// );
+
+@each $colorkey, $colorvalue in $colors {
+  .text-#{$colorkey} {
+    color: $colorvalue;
+  }
+  // 背景色
+  .bg-#{$colorkey} {
+    background-color: $colorvalue;
+  }
+}
+
+// !定义文字的对齐方式，按照左中右三种定义三个class，定义成工具类
+// 表示一个循环，可以是循环已经定义好的，也可以在现场接着定义
+@each $var in (left, center, right) {
+  .text-#{$var} {
+    text-align: $var;
+  }
+}
+
+// !文字 不同的字体大小的工具类
+// // 需要将不同的文字大小换算成rem，使用的是html中的字体大小
+// $base-font-size: 1rem;
+// $font-sizes: (
+//   // 8px
+//   xxs: 0.5,
+//   // 10px
+//   xs: 0.7692,
+//   // 12px
+//   sm: 0.9231,
+//   // 13px
+//   md: 1,
+//   // 14px
+//   lg: 1.0769,
+//   // 16px
+//   xl: 1.2308
+// );
+
+@each $sizeKey, $size in $font-sizes {
+  .fs-#{$sizeKey} {
+    font-size: $size * $base-font-size;
+  }
+}
+
+// !text overflow
+.text-ellipsis {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  // 必须加上这个：不让其换行
+  white-space: nowrap;
+}
+
+// !flex
+.d-flex {
+  // 默认是水平方向上的flex布局
+  display: flex;
+}
+.flex-column {
+  flex-direction: column;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+// // 主轴对齐方式
+// $flex-jc: (
+//   start: flex-start,
+//   end: flex-end,
+//   center: center,
+//   between: space-between,
+//   around: space-around,
+// );
+@each $key, $value in $flex-jc {
+  .jc-#{$key} {
+    justify-content: $value;
+  }
+}
+// // 交叉轴对齐方式
+// $flex-ai: (
+//   start: flex-start,
+//   end: flex-end,
+//   center: center,
+//   // 在水平方向上有一个对齐方式，需要在垂直方向上是等高的时候
+//   stretch: stretch,
+// );
+@each $key, $value in $flex-ai {
+  .ai-#{$key} {
+    align-items: $value;
+  }
+}
+.flex-1 {
+  flex: 1;
+}
+// 左边固定，右边拉伸撑满，默认会将自己拉伸，此时没有定义shrink
+// flex: 1  表明grow 和 shrink 都是 1
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+// !边距 spacing 模仿的是bootstrap中的： mt-1 => margin-top 1等级
+// // 使用多层嵌套来基本实现所有的边距
+// $spacing-types: (
+//   m: margin,
+//   p: padding,
+// );
+// $spacing-direction: (
+//   t: top,
+//   r: right,
+//   b: bottom,
+//   l: left,
+// );
+// // 单位尺寸，基础的空间尺寸
+// $spacing-base-size: 1rem;
+// // 等级，倍数尺寸都是根据bootstrap来的
+// $spacing-sizes: (
+//   0: 0,
+//   1: 0.25,
+//   2: 0.5,
+//   3: 1,
+//   4: 1.5,
+//   5: 3,
+// );
+// 利用多层嵌套循环，将所有的需要的margin padding样式写了出来
+@each $typeKey, $type in $spacing-types {
+  // .m-1
+  @each $sizeKey, $size in $spacing-sizes {
+    .#{$typeKey}-#{$sizeKey} {
+      #{$type}: $size * $spacing-base-size;
+    }
+  }
+  //
+  @each $sizeKey, $size in $spacing-sizes {
+    // .mx-1
+    .#{$typeKey}x-#{$sizeKey} {
+      #{$type}-left: $size * $spacing-base-size;
+      #{$type}-right: $size * $spacing-base-size;
+    }
+    // .my-1
+    .#{$typeKey}y-#{$sizeKey} {
+      #{$type}-top: $size * $spacing-base-size;
+      #{$type}-bottom: $size * $spacing-base-size;
+    }
+  }
+  // .mt-1
+  @each $directionKey, $direction in $spacing-direction {
+    @each $sizeKey, $size in $spacing-sizes {
+      .#{$typeKey}#{$directionKey}-#{$sizeKey} {
+        #{$type}-#{$direction}: $size * $spacing-base-size;
+      }
+    }
+  }
+  .#{$typeKey} {
+    #{$type}: 0;
+  }
+}
+
+.btn {
+  border: none;
+  border-radius: 0.1538rem;
+  // 获取以前定义的一个变量的值
+  font-size: map-get($font-sizes, "md") * $base-font-size;
+  padding: 0.1rem 0.5rem;
+
+  &.btn-lg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    i {
+      color: map-get($map: $colors, $key: "primary");
+      font-weight: bold;
+      font-size: 1.5rem;
+      margin-right: 0.8rem;
+    }
+    background: map-get($map: $colors, $key: "white-1");
+    border: 1px solid map-get($map: $colors, $key: "white-2");
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+.nav {
+  display: flex;
+  .nav-item {
+    // 表明底部边框是3像素的实线，且是透明的，这样设置会导致其余的都差一个高度，所以需要设置
+    border-bottom: 3px solid transparent;
+    padding-bottom: 0.1rem;
+    &.active {
+      color: map-get($map: $colors, $key: "primary");
+      border-bottom: 3px solid map-get($map: $colors, $key: "primary");
+    }
+  }
+  &.nav-inverse {
+    .nav-item {
+      color: map-get($map: $colors, $key: "white");
+      &.active {
+        border-bottom: 3px solid map-get($map: $colors, $key: "white");
+      }
+    }
+  }
+}
+
+// sprite：精灵图
+.sprite {
+  background: url("../img/index.png") no-repeat 0 0;
+
+  // 双倍宽度的像素
+  background-size: 23.4375rem;
+
+  // 里面的每一个图标
+  // 此时所有的标签都是使用i标签，所以需要将其转换成块级元素，不然无法设置宽高
+  display: inline-block;
+  &.sprite-news {
+    width: 1.4375rem;
+    height: 1.25rem;
+    background-position: 63.546% 15.517%;
+  }
+  &.sprite-story {
+    width: 1.5rem;
+    height: 1.25rem;
+    background-position: 36.467% 15.287%;
+  }
+  &.sprite-store {
+    width: 1.1875rem;
+    height: 1.375rem;
+    background-position: 36.746% 0.924%;
+  }
+  &.sprite-try {
+    width: 1.25rem;
+    height: 1.25rem;
+    background-position: 10.408% 15.517%;
+  }
+  &.sprite-honor {
+    width: 1.5rem;
+    height: 1.25rem;
+    background-position: 36.467% 15.287%;
+  }
+  &.sprite-wangzhe {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-position: 63.3% 0.927%;
+  }
+  &.sprite-wechat {
+    width: 1.5rem;
+    height: 1.25rem;
+    background-position: 0 96.207%;
+  }
+  &.sprite-newperson {
+    width: 1.25rem;
+    height: 1.3125rem;
+    background-position: 89.733% 1.266%;
+  }
+  &.sprite-version {
+    width: 1.9375rem;
+    height: 1.5rem;
+    background-position: 9.302% 0.813%;
+  }
+  &.sprite-arrow {
+    width: 0.625rem;
+    height: 0.625rem;
+    background-position: 38.577% 52.076%;
+  }
+}
+
+// !borders
+@each $dir in (top, right, bottom, left) {
+  .border-#{$dir} {
+    border-#{$dir}: 1px solid $border-color;
+  }
+}

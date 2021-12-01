@@ -1,0 +1,87 @@
+// !添加总体的colors变量，以键值对的方式
+// 定义的key值如果与属性名称一致，那么就可以使用双引号将其括起来
+$colors: (
+  "primary": #db9e3f,
+  "white": #fff,
+  "white-1": #fcfcfc,
+  "white-2": #eceef0,
+  "black": #333,
+  "dark": #222,
+  "grey": #999,
+  "light": #f9f9f9,
+  "border": #d4d9de,
+  "info": rgb(103, 182, 247),
+  "news": #4394e4,
+  "danger": #781a16,
+  "blue": #203896,
+  "dark-1": #36392c,
+  "primary-1": #815605,
+  "primary-2": #7f5605,
+);
+
+// !文字 不同的字体大小的工具类
+// 需要将不同的文字大小换算成rem，使用的是html中的字体大小
+$base-font-size: 1rem;
+$font-sizes: (
+  // 8px
+  xxs: 0.5,
+  // 10px
+  xs: 0.7692,
+  // 12px
+  sm: 0.9231,
+  // 13px
+  md: 1,
+  // 14px
+  lg: 1.0769,
+  // 16px
+  xl: 1.2308,
+  xxl: 1.25
+);
+
+// !边距 spacing 模仿的是bootstrap中的： mt-1 => margin-top 1等级
+// 使用多层嵌套来基本实现所有的边距
+$spacing-types: (
+  m: margin,
+  p: padding,
+);
+$spacing-direction: (
+  t: top,
+  r: right,
+  b: bottom,
+  l: left,
+);
+// 单位尺寸，基础的空间尺寸
+$spacing-base-size: 1rem;
+// 等级，倍数尺寸都是根据bootstrap来的
+$spacing-sizes: (
+  0: 0,
+  1: 0.25,
+  2: 0.5,
+  3: 1,
+  4: 1.5,
+  5: 3,
+);
+
+// !flex
+// 主轴对齐方式
+$flex-jc: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  between: space-between,
+  around: space-around,
+);
+// 交叉轴对齐方式
+$flex-ai: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  // 在水平方向上有一个对齐方式，需要在垂直方向上是等高的时候
+  stretch: stretch,
+);
+
+// !边框颜色
+$border-color: map-get(
+  $map: $colors,
+  $key: "border",
+);
